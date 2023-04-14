@@ -6,8 +6,7 @@ import json
 import pprint
 
 printer = pprint.PrettyPrinter()
-with open("abis/ERC20.json") as erc20:
-    erc20_abi = json.load(erc20)
+
 
 
 # {asset_holder: {token_address: amount gained/lost}}
@@ -17,6 +16,8 @@ AssetDeltas = {str: {str: int}}
 # this function will detect balance changes in ERC20 tokens and return an AssetDelta Obj summarizing
 # all changes in a given transaction
 def detect_gainers_and_losers(txn_hash: str) -> AssetDeltas:
+    with open("abis/ERC20.json") as erc20:
+        erc20_abi = json.load(erc20)
     url = os.getenv("INFURA_URL")
     w3 = Web3(providers.HTTPProvider(endpoint_uri=url))
     asset_deltas: AssetDeltas = {}
